@@ -6,12 +6,13 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:voice_assistant/api.dart';
 import 'package:voice_assistant/catModel.dart';
 import 'package:voice_assistant/colors.dart';
+import 'package:voice_assistant/speechScreen.dart';
 
 class textScreen extends StatefulWidget {
   const textScreen({super.key});
 
   @override
-  State<SpeechScreen> createState() => _textScreenState();
+  State<textScreen> createState() => _textScreenState();
 }
 
 class _textScreenState extends State<textScreen> {
@@ -43,9 +44,10 @@ class _textScreenState extends State<textScreen> {
           ),
         ),
         ListTile(
-          title: Text('Text'),
+          title: Text('Voice input'),
           onTap: () {
-            // Handle item 1 press
+            Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SpeechScreen()));
           },
         ),
        
@@ -54,56 +56,6 @@ class _textScreenState extends State<textScreen> {
   ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.centerFloat, // to set it to center
-      floatingActionButton: AvatarGlow(
-        endRadius: 75.0,
-        animate: isListening,
-        duration: Duration(milliseconds: 2000),
-        glowColor: bgColor,
-        repeat: true,
-        repeatPauseDuration: Duration(milliseconds: -500),
-        showTwoGlows: true,
-        child: GestureDetector(
-          onTapDown: (deets) async {
-            if (!isListening) {
-              var available = await speechtotext.initialize();
-              if (available) {
-                setState(() {
-                  isListening = true;
-                  speechtotext.listen(onResult: (result) {
-                    setState(() {
-                      text = result.recognizedWords;
-                    });
-                  });
-                });
-              }
-            }
-          },
-          onTapUp: (deets) async {
-            setState(() {
-              isListening = false;
-            });
-            speechtotext.stop();
-
-            messages.add(ChatMsg(text: text, type: ChatMsgType.user));
-            var msg = await Api.sendMsg(text);
-            setState(() {
-              messages.add(ChatMsg(text: msg, type: ChatMsgType.bot));
-            });
-          },
-          child: CircleAvatar(
-            backgroundColor: bgColor,
-            radius: 35,
-            child: Icon(
-              isListening
-                  ? Icons.mic
-                  : Icons
-                      .mic_none, // to change the icon as per the value of islintening
-              color: Colors.white,
-              size: 30,
-            ),
-          ),
-        ),
-      ),
       appBar: AppBar(
         leading:
             IconButton(onPressed: () {}, icon: const Icon(Icons.sort_rounded)),

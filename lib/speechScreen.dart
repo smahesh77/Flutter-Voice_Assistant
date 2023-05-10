@@ -6,6 +6,7 @@ import 'package:speech_to_text/speech_to_text.dart';
 import 'package:voice_assistant/api.dart';
 import 'package:voice_assistant/catModel.dart';
 import 'package:voice_assistant/colors.dart';
+import 'package:voice_assistant/textScreen.dart';
 
 class SpeechScreen extends StatefulWidget {
   const SpeechScreen({super.key});
@@ -45,9 +46,10 @@ class _SpeechScreenState extends State<SpeechScreen> {
               ),
             ),
             ListTile(
-              title: Text('Text'),
+              title: Text('Text input'),
               onTap: () {
-                // Handle item 1 press
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => textScreen()));
               },
             ),
           ],
@@ -106,8 +108,11 @@ class _SpeechScreenState extends State<SpeechScreen> {
         ),
       ),
       appBar: AppBar(
-        leading:
-            IconButton(onPressed: () {_scaffoldKey.currentState!.openDrawer();}, icon: const Icon(Icons.sort_rounded)),
+        leading: IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState!.openDrawer();
+            },
+            icon: const Icon(Icons.sort_rounded)),
         backgroundColor: bgColor,
         elevation: 0.0,
         title: const Text(
