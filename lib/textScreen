@@ -7,20 +7,19 @@ import 'package:voice_assistant/api.dart';
 import 'package:voice_assistant/catModel.dart';
 import 'package:voice_assistant/colors.dart';
 
-class SpeechScreen extends StatefulWidget {
-  const SpeechScreen({super.key});
+class textScreen extends StatefulWidget {
+  const textScreen({super.key});
 
   @override
-  State<SpeechScreen> createState() => _SpeechScreenState();
+  State<SpeechScreen> createState() => _textScreenState();
 }
 
-class _SpeechScreenState extends State<SpeechScreen> {
+class _textScreenState extends State<textScreen> {
   SpeechToText speechtotext = SpeechToText();
   var text = "Hold the button and start speaking";
   var isListening = false;
   final List<ChatMsg> messages = [];
   var scrollCon = ScrollController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   scrolMeth() {
     scrollCon.animateTo(
@@ -33,26 +32,26 @@ class _SpeechScreenState extends State<SpeechScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Menu'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            ListTile(
-              title: Text('Text'),
-              onTap: () {
-                // Handle item 1 press
-              },
-            ),
-          ],
+    child: ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        DrawerHeader(
+          child: Text('Menu'),
+          decoration: BoxDecoration(
+            color: Colors.blue,
+          ),
         ),
-      ),
+        ListTile(
+          title: Text('Text'),
+          onTap: () {
+            // Handle item 1 press
+          },
+        ),
+       
+      ],
+    ),
+  ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.centerFloat, // to set it to center
       floatingActionButton: AvatarGlow(
@@ -107,7 +106,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
       ),
       appBar: AppBar(
         leading:
-            IconButton(onPressed: () {_scaffoldKey.currentState!.openDrawer();}, icon: const Icon(Icons.sort_rounded)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.sort_rounded)),
         backgroundColor: bgColor,
         elevation: 0.0,
         title: const Text(
