@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:voice_assistant/api.dart';
-import 'package:voice_assistant/catModel.dart';
+import 'package:voice_assistant/chatModel.dart';
 import 'package:voice_assistant/colors.dart';
 import 'package:voice_assistant/speechScreen.dart';
 
@@ -17,10 +17,11 @@ class textScreen extends StatefulWidget {
 
 class _textScreenState extends State<textScreen> {
   SpeechToText speechtotext = SpeechToText();
-  var text = "Hold the button and start speaking";
+  var text;
   var isListening = false;
   final List<ChatMsg> messages = [];
   var scrollCon = ScrollController();
+  var qCon = TextEditingController();
 
   scrolMeth() {
     scrollCon.animateTo(
@@ -34,26 +35,25 @@ class _textScreenState extends State<textScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: Drawer(
-    child: ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        DrawerHeader(
-          child: Text('Menu'),
-          decoration: BoxDecoration(
-            color: Colors.blue,
-          ),
-        ),
-        ListTile(
-          title: Text('Voice input'),
-          onTap: () {
-            Navigator.push(context,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              child: Text('Menu'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+            ),
+            ListTile(
+              title: Text('Voice input'),
+              onTap: () {
+                Navigator.push(context,
                     MaterialPageRoute(builder: (context) => SpeechScreen()));
-          },
+              },
+            ),
+          ],
         ),
-       
-      ],
-    ),
-  ),
+      ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.centerFloat, // to set it to center
       appBar: AppBar(
@@ -71,10 +71,10 @@ class _textScreenState extends State<textScreen> {
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
         child: Column(
           children: [
-            Text(
-              text,
+            const Text(
+              "Enter your question",
               style: TextStyle(
-                  color: isListening ? Colors.black87 : Colors.black54,
+                  color: Colors.black87,
                   fontSize: 28,
                   fontWeight: FontWeight.w600),
             ),
@@ -103,6 +103,23 @@ class _textScreenState extends State<textScreen> {
             const SizedBox(
               height: 12,
             ),
+            TextField(
+              controller: qCon,
+              decoration: InputDecoration(hintText: "enter your qurstion here"),
+            ),
+            IconButton(
+                splashRadius: 20,
+                onPressed: () async {
+                  text = qCon.text;
+                  messages.add(ChatMsg(text: text, type: ChatMsgType.user));
+                  var msg = await Api.sendMsg(text);
+                  setState(() {
+                    messages.add(ChatMsg(text: msg, type: ChatMsgType.bot));
+                  });
+                  qCon.clear();
+                },
+                icon: const Icon(Icons.send)),
+                
             const Text(
               'Developed by The Dot Company',
               style: TextStyle(
@@ -123,7 +140,7 @@ class _textScreenState extends State<textScreen> {
         CircleAvatar(
           backgroundColor: bgColor,
           child: Icon(
-            Icons.person,
+            type == ChatMsgType.bot ? Icons.android : Icons.person,
             color: Colors.white,
           ),
         ),

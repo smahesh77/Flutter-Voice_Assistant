@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:voice_assistant/api.dart';
-import 'package:voice_assistant/catModel.dart';
+import 'package:voice_assistant/chatModel.dart';
 import 'package:voice_assistant/colors.dart';
 import 'package:voice_assistant/textScreen.dart';
 
@@ -177,7 +177,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
         CircleAvatar(
           backgroundColor: bgColor,
           child: Icon(
-            Icons.person,
+            type == ChatMsgType.bot ? Icons.android : Icons.person,
             color: Colors.white,
           ),
         ),

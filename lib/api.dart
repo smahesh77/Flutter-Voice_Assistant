@@ -25,7 +25,7 @@ class Api {
           "presence_penalty": 0.0,
           "stop": ["Human", "AI:"]
         }));
-
+    print(jsonDecode(res.body));
     if (res.statusCode == 200) {
       var data = jsonDecode(res.body.toString());
       var msg = data['choices'][0]['text'];
